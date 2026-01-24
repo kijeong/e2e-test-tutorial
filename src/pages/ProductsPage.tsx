@@ -1,28 +1,28 @@
-import { useEffect, useState } from 'react'
-import { fetchProducts } from '../api/products'
-import { ProductCard } from '../components/ProductCard'
-import type { Product } from '../types'
+import { useEffect, useState } from "react";
+import { fetchProducts } from "../api/products";
+import { ProductCard } from "../components/ProductCard";
+import type { Product } from "../types";
 
 export const ProductsPage = () => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await fetchProducts()
-        setProducts(data)
+        const data = await fetchProducts();
+        setProducts(data);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : '상품을 불러오지 못했어요.'
-        )
+          err instanceof Error ? err.message : "상품을 불러오지 못했어요.",
+        );
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    load()
-  }, [])
+    };
+    load();
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -64,5 +64,5 @@ export const ProductsPage = () => {
         </section>
       )}
     </div>
-  )
-}
+  );
+};

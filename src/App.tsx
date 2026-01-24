@@ -1,18 +1,18 @@
-import { Route, Routes } from 'react-router-dom'
-import { Navbar } from './components/Navbar'
-import { CartPage } from './pages/CartPage'
-import { HomePage } from './pages/HomePage'
-import { LoginPage } from './pages/LoginPage'
-import { NotFoundPage } from './pages/NotFoundPage'
-import { ProductDetailPage } from './pages/ProductDetailPage'
-import { ProductsPage } from './pages/ProductsPage'
-import { SignupPage } from './pages/SignupPage'
+import { Route, Routes } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import { CartPage } from "./pages/CartPage";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { ProductsPage } from "./pages/ProductsPage";
+import { SignupPage } from "./pages/SignupPage";
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl px-4 py-8">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
@@ -30,7 +30,7 @@ function App() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 export const NotFoundPage = () => {
   return (
@@ -11,10 +11,9 @@ export const NotFoundPage = () => {
       </p>
       <Link
         to="/"
-        className="mt-6 inline-flex rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600"
-      >
+        className="mt-6 inline-flex rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600">
         홈으로 가기
       </Link>
     </div>
-  )
-}
+  );
+};

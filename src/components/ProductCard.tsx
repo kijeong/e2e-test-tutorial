@@ -1,16 +1,16 @@
-import { Link } from 'react-router-dom'
-import type { Product } from '../types'
-import { formatCurrency } from '../utils/format'
-import { useCart } from '../store/CartContext'
-import { useAuth } from '../store/AuthContext'
+import { Link } from "react-router-dom";
+import type { Product } from "../types";
+import { formatCurrency } from "../utils/format";
+import { useCart } from "../store/CartContext";
+import { useAuth } from "../store/AuthContext";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+};
 
 export const ProductCard = ({ product }: Props) => {
-  const { addItem } = useCart()
-  const { user } = useAuth()
+  const { addItem } = useCart();
+  const { user } = useAuth();
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
@@ -29,8 +29,7 @@ export const ProductCard = ({ product }: Props) => {
             </p>
             <Link
               to={`/products/${product.id}`}
-              className="mt-1 block text-lg font-semibold text-slate-900"
-            >
+              className="mt-1 block text-lg font-semibold text-slate-900">
               {product.name}
             </Link>
           </div>
@@ -47,20 +46,18 @@ export const ProductCard = ({ product }: Props) => {
             <button
               type="button"
               onClick={() => addItem(product.id, 1)}
-              className="rounded-full bg-indigo-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-indigo-600"
-            >
+              className="rounded-full bg-indigo-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-indigo-600">
               장바구니 담기
             </button>
           ) : (
             <Link
               to="/login"
-              className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
-            >
+              className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:text-slate-900">
               로그인 후 담기
             </Link>
           )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
