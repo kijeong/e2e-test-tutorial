@@ -6,9 +6,18 @@ import { formatCurrency } from "../utils/format";
 
 export const CartPage = () => {
   const { user } = useAuth();
-  const { items, loading, updateItem, removeItem, checkout, totalPrice } =
-    useCart();
+  const {
+    items,
+    loading,
+    checkoutLoading,
+    updateItem,
+    removeItem,
+    checkout,
+    totalPrice,
+  } = useCart();
   const [message, setMessage] = useState("");
+  const isEmpty = items.length === 0;
+  const isCheckoutDisabled = isEmpty || checkoutLoading;
 
   const handleCheckout = async () => {
     setMessage("");
@@ -49,7 +58,7 @@ export const CartPage = () => {
             장바구니를 불러오는 중이에요...
           </div>
         )}
-        {!loading && items.length === 0 && (
+        {!loading && isEmpty && (
           <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-6 text-sm text-slate-500">
             장바구니가 비어 있어요. 상품을 담아보세요.
           </div>
@@ -113,10 +122,28 @@ export const CartPage = () => {
         <button
           type="button"
           onClick={handleCheckout}
-          disabled={items.length === 0}
-          className="mt-4 w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:bg-slate-200">
-          구매하기
+          disabled={isCheckoutDisabled}
+          className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-semibold text-white transition ${
+            isCheckoutDisabled
+              ? isEmpty
+                ? "cursor-not-allowed bg-slate-200 text-slate-500"
+                : "cursor-wait bg-indigo-500"
+              : "bg-indigo-500 hover:bg-indigo-600"
+          }`}>
+          {checkoutLoading ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+              결제 진행 중...
+            </span>
+          ) : (
+            "구매하기"
+          )}
         </button>
+        {checkoutLoading && (
+          <p className="mt-3 rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-500">
+            결제 처리를 위해 잠시만 기다려주세요.
+          </p>
+        )}
         {message && (
           <p className="mt-3 rounded-xl bg-emerald-50 px-3 py-2 text-xs text-emerald-600">
             {message}

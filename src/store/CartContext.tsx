@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { toast } from "react-hot-toast";
 import * as cartApi from "../api/cart";
 import * as orderApi from "../api/orders";
@@ -9,6 +16,7 @@ import { useAuth } from "./AuthContext";
 type CartContextValue = {
   items: CartItemWithProduct[];
   loading: boolean;
+  checkoutLoading: boolean;
   refresh: () => Promise<void>;
   addItem: (productId: number, quantity?: number) => Promise<void>;
   updateItem: (itemId: number, quantity: number) => Promise<void>;
@@ -24,8 +32,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
   const [items, setItems] = useState<CartItemWithProduct[]>([]);
   const [loading, setLoading] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-  const hydrate = async () => {
+  const hydrate = useCallback(async () => {
     if (!user) {
       setItems([]);
       return;
@@ -50,56 +59,65 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     hydrate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]);
+  }, [hydrate]);
 
-  const addItem = async (productId: number, quantity = 1) => {
-    if (!user) return;
-    try {
-      await cartApi.addToCart(user.id, productId, quantity);
-      await hydrate();
-      toast.success("장바구니에 담았어요.");
-    } catch (error) {
-      toast.error("장바구니 담기에 실패했어요.");
-      throw error;
-    }
-  };
-
-  const updateItem = async (itemId: number, quantity: number) => {
-    if (!user) return;
-    try {
-      if (quantity <= 0) {
-        await cartApi.removeCartItem(itemId);
-        toast("장바구니에서 삭제했어요.");
-      } else {
-        await cartApi.updateCartItem(itemId, quantity);
-        toast.success("수량을 변경했어요.");
+  const addItem = useCallback(
+    async (productId: number, quantity = 1) => {
+      if (!user) return;
+      try {
+        await cartApi.addToCart(user.id, productId, quantity);
+        await hydrate();
+        toast.success("장바구니에 담았어요.");
+      } catch (error) {
+        toast.error("장바구니 담기에 실패했어요.");
+        throw error;
       }
-      await hydrate();
-    } catch (error) {
-      toast.error("장바구니 수정에 실패했어요.");
-      throw error;
-    }
-  };
+    },
+    [hydrate, user],
+  );
 
-  const removeItem = async (itemId: number) => {
-    if (!user) return;
-    try {
-      await cartApi.removeCartItem(itemId);
-      await hydrate();
-      toast("장바구니에서 삭제했어요.");
-    } catch (error) {
-      toast.error("장바구니 삭제에 실패했어요.");
-      throw error;
-    }
-  };
+  const updateItem = useCallback(
+    async (itemId: number, quantity: number) => {
+      if (!user) return;
+      try {
+        if (quantity <= 0) {
+          await cartApi.removeCartItem(itemId);
+          toast("장바구니에서 삭제했어요.");
+        } else {
+          await cartApi.updateCartItem(itemId, quantity);
+          toast.success("수량을 변경했어요.");
+        }
+        await hydrate();
+      } catch (error) {
+        toast.error("장바구니 수정에 실패했어요.");
+        throw error;
+      }
+    },
+    [hydrate, user],
+  );
 
-  const checkout = async () => {
+  const removeItem = useCallback(
+    async (itemId: number) => {
+      if (!user) return;
+      try {
+        await cartApi.removeCartItem(itemId);
+        await hydrate();
+        toast("장바구니에서 삭제했어요.");
+      } catch (error) {
+        toast.error("장바구니 삭제에 실패했어요.");
+        throw error;
+      }
+    },
+    [hydrate, user],
+  );
+
+  const checkout = useCallback(async () => {
     if (!user || items.length === 0) return;
+    setCheckoutLoading(true);
     try {
       const orderItems: OrderItem[] = items.map((item) => ({
         productId: item.productId,
@@ -117,8 +135,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       toast.error("구매에 실패했어요.");
       throw error;
+    } finally {
+      setCheckoutLoading(false);
     }
-  };
+  }, [hydrate, items, user]);
 
   const value = useMemo(() => {
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -129,6 +149,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     return {
       items,
       loading,
+      checkoutLoading,
       refresh: hydrate,
       addItem,
       updateItem,
@@ -137,11 +158,21 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       itemCount,
       totalPrice,
     };
-  }, [items, loading]);
+  }, [
+    items,
+    loading,
+    checkoutLoading,
+    hydrate,
+    addItem,
+    updateItem,
+    removeItem,
+    checkout,
+  ]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCart = () => {
   const ctx = useContext(CartContext);
   if (!ctx) {

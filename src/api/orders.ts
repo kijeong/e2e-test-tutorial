@@ -1,12 +1,18 @@
 import { request } from "./client";
 import type { Order, OrderItem } from "../types";
 
-export const createOrder = (
+const delay = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+
+export const createOrder = async (
   userId: number,
   items: OrderItem[],
   total: number,
-) =>
-  request<Order>("/orders", {
+) => {
+  await delay(3000);
+  return request<Order>("/orders", {
     method: "POST",
     json: {
       userId,
@@ -15,3 +21,4 @@ export const createOrder = (
       createdAt: new Date().toISOString(),
     },
   });
+};
