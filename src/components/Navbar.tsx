@@ -16,7 +16,10 @@ export const Navbar = () => {
           브리즈 스토어
         </NavLink>
         <nav className="flex items-center gap-6">
-          <NavLink to="/products" className={linkBase} data-testid="nav-products">
+          <NavLink
+            to="/products"
+            className={linkBase}
+            data-testid="nav-products">
             상품
           </NavLink>
           <NavLink to="/cart" className={linkBase} data-testid="nav-cart">

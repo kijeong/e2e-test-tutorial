@@ -72,7 +72,10 @@ export const calculateOrderSummary = (
   let couponDiscount = 0;
   const coupon = context.coupon;
   if (coupon) {
-    if (typeof coupon.minSubtotal === "number" && subtotal < coupon.minSubtotal) {
+    if (
+      typeof coupon.minSubtotal === "number" &&
+      subtotal < coupon.minSubtotal
+    ) {
       warnings.push("쿠폰 최소 주문금액을 충족하지 못했어요.");
     } else {
       couponDiscount = calcCouponDiscount(items, coupon);
@@ -92,7 +95,9 @@ export const calculateOrderSummary = (
   const discountedSubtotal = clampMoney(subtotal - couponDiscount);
 
   const shippingFee =
-    discountedSubtotal >= rules.freeShippingThreshold ? 0 : rules.baseShippingFee;
+    discountedSubtotal >= rules.freeShippingThreshold
+      ? 0
+      : rules.baseShippingFee;
   if (shippingFee === 0) {
     appliedPromotions.push({
       kind: "freeShipping",
@@ -105,7 +110,7 @@ export const calculateOrderSummary = (
   const requestedPoints = clampMoney(context.pointsToUse ?? 0);
   const maxByRate = calcMaxUsablePoints(payableBeforePoints, rules);
 
-  let pointsDiscount = Math.min(
+  const pointsDiscount = Math.min(
     requestedPoints,
     clampMoney(context.pointBalance),
     maxByRate,
@@ -141,4 +146,3 @@ export const calculateOrderSummary = (
     warnings,
   };
 };
-

@@ -9,6 +9,9 @@
     "skipLibCheck": true,
     "verbatimModuleSyntax": false
   },
-  "include": ["src/domain/**/*.ts"]
+  "include": [
+    "src/domain/**/*.ts",
+    "src/**/*.test.ts",
+    "src/**/__tests__/**/*.ts"
+  ]
 }
-

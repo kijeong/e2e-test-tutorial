@@ -1,25 +1,25 @@
-import { useState } from 'react'
-import type { FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../store/AuthContext'
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../store/AuthContext";
 
 export const LoginPage = () => {
-  const { login, user } = useAuth()
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault()
-    setError('')
+    event.preventDefault();
+    setError("");
     try {
-      await login(email, password)
-      navigate('/products')
+      await login(email, password);
+      navigate("/products");
     } catch (err) {
-      setError(err instanceof Error ? err.message : '로그인에 실패했어요.')
+      setError(err instanceof Error ? err.message : "로그인에 실패했어요.");
     }
-  }
+  };
 
   if (user) {
     return (
@@ -32,12 +32,11 @@ export const LoginPage = () => {
         </p>
         <Link
           to="/products"
-          className="mt-6 inline-flex rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600"
-        >
+          className="mt-6 inline-flex rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600">
           상품 보러가기
         </Link>
       </div>
-    )
+    );
   }
 
   return (
@@ -79,13 +78,12 @@ export const LoginPage = () => {
         <button
           data-testid="login-submit"
           type="submit"
-          className="w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600"
-        >
+          className="w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600">
           로그인하기
         </button>
       </form>
       <p className="mt-6 text-center text-xs text-slate-500">
-        아직 계정이 없나요?{' '}
+        아직 계정이 없나요?{" "}
         <Link to="/signup" className="font-semibold text-indigo-500">
           회원가입
         </Link>
@@ -96,5 +94,5 @@ export const LoginPage = () => {
         <p>비밀번호: demo1234</p>
       </div>
     </div>
-  )
-}
+  );
+};
