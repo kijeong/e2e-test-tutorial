@@ -67,6 +67,7 @@ export const CartPage = () => {
           items.map((item) => (
             <div
               key={item.id}
+              data-testid="cart-item"
               className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-card sm:flex-row sm:items-center">
               <img
                 src={item.product.image}
@@ -120,6 +121,7 @@ export const CartPage = () => {
           <span>{formatCurrency(totalPrice)}</span>
         </div>
         <button
+          data-testid="checkout-button"
           type="button"
           onClick={handleCheckout}
           disabled={isCheckoutDisabled}

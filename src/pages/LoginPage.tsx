@@ -50,6 +50,7 @@ export const LoginPage = () => {
         <label className="block text-sm font-semibold text-slate-600">
           이메일
           <input
+            data-testid="login-email"
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -61,6 +62,7 @@ export const LoginPage = () => {
         <label className="block text-sm font-semibold text-slate-600">
           비밀번호
           <input
+            data-testid="login-password"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -75,6 +77,7 @@ export const LoginPage = () => {
           </div>
         )}
         <button
+          data-testid="login-submit"
           type="submit"
           className="w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600"
         >

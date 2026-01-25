@@ -16,10 +16,10 @@ export const Navbar = () => {
           브리즈 스토어
         </NavLink>
         <nav className="flex items-center gap-6">
-          <NavLink to="/products" className={linkBase}>
+          <NavLink to="/products" className={linkBase} data-testid="nav-products">
             상품
           </NavLink>
-          <NavLink to="/cart" className={linkBase}>
+          <NavLink to="/cart" className={linkBase} data-testid="nav-cart">
             장바구니
             {itemCount > 0 && (
               <span className="ml-2 rounded-full bg-indigo-500 px-2 py-0.5 text-xs text-white">

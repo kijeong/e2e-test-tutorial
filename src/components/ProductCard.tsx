@@ -13,7 +13,9 @@ export const ProductCard = ({ product }: Props) => {
   const { user } = useAuth();
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
+    <div
+      className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card"
+      data-testid={`product-card-${product.id}`}>
       <Link to={`/products/${product.id}`} className="block">
         <img
           src={product.image}
@@ -46,6 +48,7 @@ export const ProductCard = ({ product }: Props) => {
             <button
               type="button"
               onClick={() => addItem(product.id, 1)}
+              data-testid={`add-to-cart-${product.id}`}
               className="rounded-full bg-indigo-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-indigo-600">
               장바구니 담기
             </button>
