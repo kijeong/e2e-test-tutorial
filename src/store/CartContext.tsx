@@ -9,7 +9,7 @@ import {
 import { toast } from "react-hot-toast";
 import * as cartApi from "../api/cart";
 import * as orderApi from "../api/orders";
-import { fetchProducts } from "../api/products";
+import { fetchProduct, fetchProducts } from "../api/products";
 import type { CartItemWithProduct, OrderItem } from "../types";
 import { useAuth } from "./AuthContext";
 
@@ -69,6 +69,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     async (productId: number, quantity = 1) => {
       if (!user) return;
       try {
+        const product = await fetchProduct(productId);
+        if (product.isOutOfStock === true) {
+          toast.error("품절 상품은 장바구니에 담을 수 없어요.");
+          return;
+        }
         await cartApi.addToCart(user.id, productId, quantity);
         await hydrate();
         toast.success("장바구니에 담았어요.");
@@ -117,6 +122,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkout = useCallback(async () => {
     if (!user || items.length === 0) return;
+    if (items.some((item) => item.product.isOutOfStock === true)) {
+      toast.error("품절 상품이 포함되어 구매할 수 없어요.");
+      return;
+    }
     setCheckoutLoading(true);
     try {
       const orderItems: OrderItem[] = items.map((item) => ({

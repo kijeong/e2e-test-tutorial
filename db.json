@@ -17,7 +17,7 @@
       "description": "Soft, breathable linen bedding for calm nights.",
       "category": "Living",
       "rating": 4.8,
-      "stock": 24
+      "isOutOfStock": true
     },
     {
       "id": "2",
@@ -27,7 +27,7 @@
       "description": "Warm citrus and cedar notes for cozy evenings.",
       "category": "Lifestyle",
       "rating": 4.6,
-      "stock": 40
+      "isOutOfStock": true
     },
     {
       "id": "3",
@@ -37,7 +37,7 @@
       "description": "A clean silhouette that brightens any corner.",
       "category": "Home",
       "rating": 4.7,
-      "stock": 18
+      "isOutOfStock": false
     },
     {
       "id": "4",
@@ -47,7 +47,7 @@
       "description": "Lightweight bag for daily errands and trips.",
       "category": "Fashion",
       "rating": 4.5,
-      "stock": 33
+      "isOutOfStock": false
     },
     {
       "id": "5",
@@ -57,7 +57,7 @@
       "description": "A calming blend with chamomile, mint, and citrus.",
       "category": "Food",
       "rating": 4.4,
-      "stock": 52
+      "isOutOfStock": false
     },
     {
       "id": "6",
@@ -67,7 +67,7 @@
       "description": "Matte finish plates that elevate every meal.",
       "category": "Kitchen",
       "rating": 4.7,
-      "stock": 20
+      "isOutOfStock": false
     }
   ],
   "cartItems": [],

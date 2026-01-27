@@ -17,7 +17,8 @@ export const CartPage = () => {
   } = useCart();
   const [message, setMessage] = useState("");
   const isEmpty = items.length === 0;
-  const isCheckoutDisabled = isEmpty || checkoutLoading;
+  const hasOutOfStock = items.some((item) => item.product.isOutOfStock === true);
+  const isCheckoutDisabled = isEmpty || checkoutLoading || hasOutOfStock;
 
   const handleCheckout = async () => {
     setMessage("");
@@ -80,6 +81,11 @@ export const CartPage = () => {
                   className="text-lg font-semibold text-slate-900">
                   {item.product.name}
                 </Link>
+                {item.product.isOutOfStock === true && (
+                  <span className="w-fit rounded-full bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-600">
+                    품절
+                  </span>
+                )}
                 <p className="text-sm text-slate-500">
                   {formatCurrency(item.product.price)}
                 </p>
@@ -120,6 +126,11 @@ export const CartPage = () => {
           <span>총 결제금액</span>
           <span>{formatCurrency(totalPrice)}</span>
         </div>
+        {hasOutOfStock && (
+          <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-xs text-rose-700">
+            품절 상품이 포함되어 구매할 수 없어요.
+          </p>
+        )}
         <button
           data-testid="checkout-button"
           type="button"
@@ -129,7 +140,9 @@ export const CartPage = () => {
             isCheckoutDisabled
               ? isEmpty
                 ? "cursor-not-allowed bg-slate-200 text-slate-500"
-                : "cursor-wait bg-indigo-500"
+                : hasOutOfStock
+                  ? "cursor-not-allowed bg-slate-200 text-slate-500"
+                  : "cursor-wait bg-indigo-500"
               : "bg-indigo-500 hover:bg-indigo-600"
           }`}>
           {checkoutLoading ? (

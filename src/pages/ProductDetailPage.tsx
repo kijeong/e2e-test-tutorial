@@ -45,6 +45,8 @@ export const ProductDetailPage = () => {
     );
   }
 
+  const isOutOfStock = product.isOutOfStock === true;
+
   return (
     <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
       <img
@@ -54,9 +56,16 @@ export const ProductDetailPage = () => {
       />
       <div className="flex flex-col gap-5">
         <div>
-          <p className="text-sm font-semibold uppercase text-indigo-500">
-            {product.category}
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm font-semibold uppercase text-indigo-500">
+              {product.category}
+            </p>
+            {isOutOfStock && (
+              <span className="rounded-full bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-600">
+                품절
+              </span>
+            )}
+          </div>
           <h2 className="mt-2 text-3xl font-bold text-slate-900">
             {product.name}
           </h2>
@@ -75,8 +84,20 @@ export const ProductDetailPage = () => {
             <button
               type="button"
               onClick={() => addItem(product.id, 1)}
-              className="mt-4 w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-600">
-              장바구니 담기
+              disabled={isOutOfStock}
+              className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                isOutOfStock
+                  ? "cursor-not-allowed bg-slate-200 text-slate-500"
+                  : "bg-indigo-500 text-white hover:bg-indigo-600"
+              }`}>
+              {isOutOfStock ? "품절" : "장바구니 담기"}
+            </button>
+          ) : isOutOfStock ? (
+            <button
+              type="button"
+              disabled
+              className="mt-4 w-full cursor-not-allowed rounded-xl bg-slate-200 px-4 py-3 text-sm font-semibold text-slate-500">
+              품절
             </button>
           ) : (
             <Link
